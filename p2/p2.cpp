@@ -36,13 +36,39 @@ int isSlimp(string str) {
 
 }
 
-int isSlump() {
-    return 0;
+int isSlump(string str) {
+
+    cout << "testando slump " << str << endl;
+    bool result = true;
+
+    if(str[0] != 'D' && str[0] != 'E') { return false; }
+    if(str[1] != 'F' || str[str.size() - 1] == 'F') { return false; }
+    int lastIndexOfF = -1;
+    int numberOfFs = 0;
+    for(std::string::size_type i = str.find('F'); i < str.size(); ++i) {
+        if(str[i] != 'F') {
+            lastIndexOfF = i;
+            cout << "Ultima posicao do F " << lastIndexOfF << endl;
+            break;
+        } else {
+            numberOfFs ++;
+        }
+    }
+    if(str[lastIndexOfF] != 'G') {
+        cout << "Char na posicao " << lastIndexOfF << " é " << str[lastIndexOfF] << endl;
+        if(!isSlump(str.substr(lastIndexOfF))) { return 0; }
+    } else {
+        cout << "Char na posicao " << lastIndexOfF << " é " << str[lastIndexOfF] << endl;
+        result = true;
+        return true;
+    }
+
+    return result;
 }
 
 int main() {
     string str = "";
     getline(cin, str);
-    cout << isSlimp(str) << endl;
+    cout << isSlump(str) << endl;
     return 0;
 }
