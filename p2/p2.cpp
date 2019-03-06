@@ -45,6 +45,7 @@ bool isSlump(string str) {
 bool isSlimp(string str) {
 
     if(shouldShowDebug) cout << "Avaliando isSlimp: " << str << endl;
+    if(shouldShowDebug) cout << slimpCount << endl;
 
     if(str[0] != 'A') {
         if(shouldShowDebug) cout << "primeira letra não é A: " << str[0] << endl;
@@ -68,7 +69,7 @@ bool isSlimp(string str) {
 
     if(str[1] == 'B') {
         slimpCount++;
-        int subSlimpEndIndex = (str.find('C') - slimpCount);
+        int subSlimpEndIndex = (str.find('C') + slimpCount);
         if(subSlimpEndIndex == -1) { return false; } 
         if(!isSlimp(str.substr(2,subSlimpEndIndex - 1))) {return false; }
         if(subSlimpEndIndex + 1 == str.length() - 1){ return false; } // Is just a slimpy
