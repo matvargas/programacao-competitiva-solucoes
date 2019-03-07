@@ -10,7 +10,34 @@ bool slimpVerification, slumpEvaluation;
 
 bool isSlump(string str) {
 
-    if(shouldShowDebug) cout << "testando slump " << str << endl;
+    if(shouldShowDebug) cout << "Slump - Evaluating : " << str << " - size:" << str.length() <<endl;
+
+    if(str[0] != 'D' && str[0] != 'E' || str[1] != 'F') {
+        if(shouldShowDebug) cout << "The evaluated text : " << str << " is not a slump, does not start with an 'D' or 'E' or is not followed by 'Fs'" << endl;
+        return false;
+    }
+
+    int i;
+    for(i = 1; i < str.length() - 1; i++) {
+        if (str[i] != 'F') { break; }
+    }
+
+    if(shouldShowDebug) cout << "The potential slump has a sequence of " << i - 1 << " Fs" << endl;
+
+    if(i + 1 > str.length()) {
+        if(shouldShowDebug) cout << "The text evaluated is not a slump, it ends with an: " << str[i] << " and not an 'G'" << endl;
+        return false;
+    } else if (str[i + 1] == 'G') {
+        if(str.length() > i + 1) {
+            if(shouldShowDebug) cout << "The text evaluated is has a 'G' but not at the end: " << str << endl;
+        }
+    } else if(str[i + 1] == 'D' || str[i + 1] == 'E') {
+        if(shouldShowDebug) cout << "After a sequence of Fs, the text has a 'D' or 'E' with is a potential start of a new slump to be evaluated: " << str.substr(i + 1) << endl;
+        isSlump(str.substr(i + 1));
+    } else {
+        if(shouldShowDebug) cout << "The char at position i + 1: '" << str[i + 1] << "' does not configure a slump" << endl;
+    }
+
     return result;
 }
 
@@ -41,6 +68,8 @@ bool isSlimp(string str) {
             if(lastCIndex != str.length() - 1) {
                 if(shouldShowDebug) cout << "The potential end of the slimp : " << lastCIndex << " is not the end of text of size " << str.length() << endl;
                 if(shouldShowDebug) cout << "The sufix will be considered as a potential slump : " << str.substr(lastCIndex + 1) << endl;
+
+                isSlump(str.substr(lastCIndex + 1));
             }
             
             string subSlimp = str.substr(2, lastCIndex - 2);
