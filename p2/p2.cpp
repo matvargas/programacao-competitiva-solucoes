@@ -6,100 +6,42 @@ using std::endl;
 
 bool shouldShowDebug;
 bool result = false;
-string actualyTextOnVerification = "";
-int slimpCount = 0;
-
-bool isSlump(string str) {
-
-    if(shouldShowDebug) cout << "testando slump " << str << endl;
-
-    if(str[0] != 'D' && str[0] != 'E') { return false; }
-    if(str[1] != 'F' || str[str.size() - 1] == 'F') { return false; }
-    int lastIndexOfF = -1;
-    int numberOfFs = 0;
-    for(std::string::size_type i = str.find('F'); i < str.size(); ++i) {
-        if(str[i] != 'F') {
-            lastIndexOfF = i;
-            if(shouldShowDebug) cout << "Ultima posicao do F " << lastIndexOfF << endl;
-            break;
-        } else {
-            numberOfFs ++;
-        }
-    }
-    if(str[lastIndexOfF] != 'G') {
-        if(shouldShowDebug) cout << "Char na posicao " << lastIndexOfF << " é " << str[lastIndexOfF] << endl;
-        if(!isSlump(str.substr(lastIndexOfF))) { return false; }
-    } else if (str[str.length() - 1] != 'G') {
-        if(shouldShowDebug) cout << "Char na posicao " << str.length() - 1 << " é " << str[str.length() - 1] << " por isso não é slumpy" << endl;
-        return false;
-    } else {
-        if(shouldShowDebug) cout << "Char na posicao " << lastIndexOfF << " é " << str[lastIndexOfF] << endl;
-        result = true;
-    }
-
-
-    if(shouldShowDebug) if(result) {cout << str << " e slumpy" << endl; }
-    return result;
-}
+bool slimpVerification;
+bool slumpVerification;
 
 bool isSlimp(string str) {
 
-    if(shouldShowDebug) cout << "Avaliando isSlimp: " << str << endl;
-    if(shouldShowDebug) cout << slimpCount << endl;
+    if(shouldShowDebug) cout << "Slimp - Evaluating: " << str << endl;
 
     if(str[0] != 'A') {
-        if(shouldShowDebug) cout << "primeira letra não é A: " << str[0] << endl;
-        return 0;  
+        if(shouldShowDebug) cout << "First char is not a 'A': " << str[0] << endl;
+        return false;  
     }
 
-    if (str[1] == 'H') {
-        if(str.length() > 2) {
-            if(shouldShowDebug) cout << "Testando se o restante e slumpy " << str.substr(2) << endl;
-            if(!isSlump(str.substr(2))) { return false; }
-            return true;
+    if(str.length() < 2){
+        if(shouldShowDebug) cout << "Slimp size is lower than 2 " << str.length() << endl; 
+        return false;
+    } else if(str.length() == 2){
+        if(str[1] == 'H') {
+            slimpVerification = true;
+            if(shouldShowDebug) cout << "Slimp identified: " << str << endl; 
         } else {
-            if(shouldShowDebug) cout << "Slimp identificado " << str.substr(0, 2) << endl;
-            if(str.compare(actualyTextOnVerification) == 0) {
-                return false;
+            return false;
+        }
+    } else if(str.length() > 2) {
+        if(str[1] == 'B') {
+            if(shouldShowDebug) cout << "Slimp has subslimps: " << str << endl;
+            int lastIndexOfC = str.find_last_of('C');
+            if(shouldShowDebug) cout << "index of 'C' char that shold close first 'B' occurrence: " << lastIndexOfC - 2 << endl;
+            if(!isSlimp(str.substr(2, lastIndexOfC - 2))) {
+               return false;
             } else {
-                return true;
+                cout << "teste" << endl;
+                slimpVerification = true;
             }
         }
     }
-
-    if(str[1] == 'B') {
-        slimpCount++;
-        int subSlimpEndIndex = (str.find('C') + slimpCount);
-        if(subSlimpEndIndex == -1) { return false; } 
-        if(!isSlimp(str.substr(2,subSlimpEndIndex - 1))) {return false; }
-        if(subSlimpEndIndex + 1 == str.length() - 1){ return false; } // Is just a slimpy
-
-        int cCounter = 0;
-        if(subSlimpEndIndex != (str.length() - 1)) {
-            int sufixLength = str.substr(subSlimpEndIndex + 1 ).length();
-            if(shouldShowDebug) cout << "Sobrou " << str.substr(subSlimpEndIndex + 1 ) << " de tamanho " << sufixLength <<  endl;
-            for (int i = 0; i < sufixLength - 1; i++) {
-                if(str.substr(subSlimpEndIndex + 1)[i] == 'C') {
-                    cCounter ++;
-                }
-            }
-            if(shouldShowDebug) cout << "Existem  " << cCounter << " Cs no sufixo restante"  <<  endl;
-        }
-
-        if(!isSlump(str.substr(subSlimpEndIndex + 1 + cCounter))) { return false; }
-
-        result = true;
-    } else {
-        int subSlimpEndIndex = (str.find('C'));
-        if(subSlimpEndIndex == -1) { return false; } 
-        if(!isSlump(str.substr(1,subSlimpEndIndex - 1))) { return false; }
-
-        if(subSlimpEndIndex != (str.length() - 1)) {
-            if(!isSlump(str.substr(subSlimpEndIndex + 1))) {return false; }
-        }
-        result = true;
-    }
-
+    if(shouldShowDebug) cout << "Slimp verification success: " << slimpVerification << endl;
     return result;
 
 }
@@ -119,9 +61,9 @@ int main() {
     
     cout << "SLURPYS OUTPUT" << endl;
     for(i = 0; i < slurpyCount; i++) {
-        actualyTextOnVerification = textsToVerify[i];
-        slimpCount = 0;
-        if(isSlimp(textsToVerify[i])) {
+        slimpVerification = false;
+        slumpVerification = false;
+        if(isSlimp(textsToVerify[i]) && slimpVerification && slumpVerification) {
             cout << "YES" << endl;
         } else {
             cout << "NO" << endl;
