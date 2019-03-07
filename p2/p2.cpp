@@ -27,15 +27,20 @@ bool isSlump(string str) {
     if(i + 1 > str.length()) {
         if(shouldShowDebug) cout << "The text evaluated is not a slump, it ends with an: " << str[i] << " and not an 'G'" << endl;
         return false;
-    } else if (str[i + 1] == 'G') {
+    } else if (str[i] == 'G') {
         if(str.length() > i + 1) {
             if(shouldShowDebug) cout << "The text evaluated is has a 'G' but not at the end: " << str << endl;
         }
-    } else if(str[i + 1] == 'D' || str[i + 1] == 'E') {
+        if((str.length() - 1) == i) {
+            if(shouldShowDebug) cout << "The end of slump was identified, " << str << " is a slump. " << endl;
+            result = true;
+            slumpEvaluation = true;
+        }
+    } else if(str[i] == 'D' || str[i] == 'E') {
         if(shouldShowDebug) cout << "After a sequence of Fs, the text has a 'D' or 'E' with is a potential start of a new slump to be evaluated: " << str.substr(i + 1) << endl;
-        isSlump(str.substr(i + 1));
+        isSlump(str.substr(i));
     } else {
-        if(shouldShowDebug) cout << "The char at position i + 1: '" << str[i + 1] << "' does not configure a slump" << endl;
+        if(shouldShowDebug) cout << "The char at position i: '" << str[i] << "' does not configure a slump" << endl;
     }
 
     return result;
