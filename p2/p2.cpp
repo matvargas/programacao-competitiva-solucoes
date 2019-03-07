@@ -37,9 +37,15 @@ bool isSlimp(string str) {
             if(shouldShowDebug) cout << "Slimp is 'BC' type : " << str << endl;
             int lastCIndex = str.find_last_of('C');
             if(shouldShowDebug) cout << "Finding the potential end of the slimp : " << lastCIndex << " is the last occurrence of 'C' " << endl;
+            
+            if(lastCIndex != str.length() - 1) {
+                if(shouldShowDebug) cout << "The potential end of the slimp : " << lastCIndex << " is not the end of text of size " << str.length() << endl;
+                if(shouldShowDebug) cout << "The sufix will be considered as a potential slump : " << str.substr(lastCIndex + 1) << endl;
+            }
+            
             string subSlimp = str.substr(2, lastCIndex - 2);
             if(shouldShowDebug) cout << "Evaluating potential subSlimp : " << subSlimp <<  endl;
-            isSlimp(subSlimp);
+            if(!isSlimp(subSlimp)) { return false; }
         } else {
             if(str[1] != 'D' && str[1] != 'E') {
                 if(shouldShowDebug) cout << "The evaluated text : " << str << " is not a slimp, after an 'A' has no 'B', 'D' or 'E' " << endl;
