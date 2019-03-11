@@ -1,12 +1,14 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 using std::endl;
 
-void deifineFinalPos(string initialPos, string instructions) {
+void deifineFinalPos(string initialPos, string instructions, int upper, int right) {
     int currentY = (int)initialPos[0] - 48;
     int currentX = (int)initialPos[2] - 48;
     char currentDir = (char)initialPos[4];
+    bool fellOfTable = false;
     cout << "Y: " << currentY << " - X: " << currentX << " - Dir: " << currentDir << endl;
     for(int i = 0; i < instructions.length(); i++){
         cout << instructions[i] << endl;
@@ -30,7 +32,14 @@ void deifineFinalPos(string initialPos, string instructions) {
                 else if(currentDir == 'E') currentX = currentX + 1;
                 break;
         }
-        cout << currentY << currentX << currentDir << endl;
+        if(currentY > upper || currentY < 0 || currentX > right || currentX < 0) {
+            cout << "CurrentY: " << currentY << " upper: " << upper << endl;
+            cout << "CurrentX: " << currentX << " right: " << right << endl;
+            i = instructions.length();
+            fellOfTable = true;
+        }
+        if(!fellOfTable) cout << currentY << " " << currentX << " " << currentDir << endl;
+        else cout << currentY << " " << currentX << " " << currentDir << " " << "LOST" << endl;
     }
 }
 
@@ -43,9 +52,7 @@ int main () {
         getline(cin, initialPos);
         if(initialPos != "" && initialPos != "/n"){
             getline(cin, instructions);
-//            cout << "Lí isso: " << initialPos << endl;
-//            cout << "Lí isso: " << instructions << endl;
-            deifineFinalPos(initialPos, instructions);
+            deifineFinalPos(initialPos, instructions, upper, right);
         }
     }
     return false;
