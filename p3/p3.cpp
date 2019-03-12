@@ -5,11 +5,11 @@ using namespace std;
 using std::endl;
 
 void deifineFinalPos(string initialPos, string instructions, int upper, int right) {
-    int currentY = (int)initialPos[0] - 48;
-    int currentX = (int)initialPos[2] - 48;
+    int currentY = (int)initialPos[2] - 48;
+    int currentX = (int)initialPos[0] - 48;
     char currentDir = (char)initialPos[4];
     bool fellOfTable = false;
-    cout << "Y: " << currentY << " - X: " << currentX << " - Dir: " << currentDir << endl;
+    cout << "X: " << currentX << " - Y: " << currentY << " - Dir: " << currentDir << endl;
     for(int i = 0; i < instructions.length(); i++){
         cout << instructions[i] << endl;
         switch (instructions[i]){
@@ -38,15 +38,15 @@ void deifineFinalPos(string initialPos, string instructions, int upper, int righ
             i = instructions.length();
             fellOfTable = true;
         }
-        if(!fellOfTable) cout << currentY << " " << currentX << " " << currentDir << endl;
+        if(!fellOfTable) cout  << currentX << " " << currentY << " " << currentDir << endl;
         else cout << currentY << " " << currentX << " " << currentDir << " " << "LOST" << endl;
     }
 }
 
 int main () {
     int upper,right;
-    cin >> upper;
     cin >> right;
+    cin >> upper;
     while(!cin.eof()) {
         string initialPos, instructions;
         getline(cin, initialPos);
