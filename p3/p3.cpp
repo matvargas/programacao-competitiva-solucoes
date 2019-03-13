@@ -4,14 +4,15 @@
 using namespace std;
 using std::endl;
 
-void deifineFinalPos(string initialPos, string instructions, int upper, int right) {
-    int currentY = (int)initialPos[2] - 48;
-    int currentX = (int)initialPos[0] - 48;
-    char currentDir = (char)initialPos[4];
+vector<pair<int,int>> lostPositions;
+
+void deifineFinalPos(int x, int y, char direction,  string instructions, int upper, int right) {
+    int currentX = x;
+    int currentY = y;
+    char currentDir = direction;
     bool fellOfTable = false;
-    cout << "X: " << currentX << " - Y: " << currentY << " - Dir: " << currentDir << endl;
+    pair<int,int> lastPos;
     for(int i = 0; i < instructions.length(); i++){
-        cout << instructions[i] << endl;
         switch (instructions[i]){
             case 'R':
                 if(currentDir == 'N') currentDir = 'E';
@@ -26,6 +27,8 @@ void deifineFinalPos(string initialPos, string instructions, int upper, int righ
                 else if(currentDir == 'E') currentDir = 'N';
                 break;
             case 'F':
+                lastPos.first = currentX;
+                lastPos.second = currentY;
                 if(currentDir == 'N') currentY = currentY + 1;
                 else if(currentDir == 'W') currentX = currentX - 1;
                 else if(currentDir == 'S') currentY = currentY - 1;
@@ -33,27 +36,37 @@ void deifineFinalPos(string initialPos, string instructions, int upper, int righ
                 break;
         }
         if(currentY > upper || currentY < 0 || currentX > right || currentX < 0) {
-            cout << "CurrentY: " << currentY << " upper: " << upper << endl;
-            cout << "CurrentX: " << currentX << " right: " << right << endl;
-            i = instructions.length();
-            fellOfTable = true;
+
+            bool sentLeft = false;
+
+            for(int i = 0; i < (int)lostPositions.size(); i++){
+                if(lastPos == lostPositions[i]) {
+                    sentLeft = true;
+                    currentX = lastPos.first;
+                    currentY = lastPos.second;
+                }
+            }
+
+            if(!sentLeft) {
+                cout << lastPos.first << " " << lastPos.second << " " << currentDir << " LOST" << endl;
+                fellOfTable = true; 
+                lostPositions.push_back(lastPos);
+                break;
+            } 
         }
-        if(!fellOfTable) cout  << currentX << " " << currentY << " " << currentDir << endl;
-        else cout << currentY << " " << currentX << " " << currentDir << " " << "LOST" << endl;
     }
+    if(!fellOfTable) cout  << currentX << " " << currentY << " " << currentDir << endl;
 }
 
 int main () {
     int upper,right;
     cin >> right;
     cin >> upper;
-    while(!cin.eof()) {
-        string initialPos, instructions;
-        getline(cin, initialPos);
-        if(initialPos != "" && initialPos != "/n"){
-            getline(cin, instructions);
-            deifineFinalPos(initialPos, instructions, upper, right);
-        }
+    char direction;
+    string instructions;
+    int x,y;
+    while(cin >> x >> y >> direction >> instructions) {
+        deifineFinalPos(x, y, direction, instructions, upper, right);
     }
     return false;
 }
