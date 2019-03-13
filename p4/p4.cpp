@@ -15,7 +15,7 @@ void computeOutgoing(vector<pair<string, int>> friendsList, vector<pair<string, 
                 friendsList[i].second -= outgoingList[j].second.first; 
                 // cout << friendsList[i].second << " from " << friendsList[i].first << endl;
 
-                if((outgoingList[j].second.first) != 0) {
+                if((outgoingList[j].second.first) != 0 && (int)outgoingList[j].second.second.size() != 0) {
                     giftValue = (outgoingList[j].second.first)/(int)outgoingList[j].second.second.size();
                     rest = (outgoingList[j].second.first)%(int)outgoingList[j].second.second.size();
                 } else {
@@ -84,7 +84,8 @@ int main() {
         }
 
         computeOutgoing(friendsList, outgoingList);
-        cout << endl;
+        if(!cin.eof()) cout << endl;
+
 
         friendsList.clear();
         outgoingList.clear();
