@@ -13,7 +13,7 @@ void computeOutgoing(vector<pair<string, int>> friendsList, vector<pair<string, 
         for(int j = 0; j < (int)outgoingList.size(); j++) {
             if(outgoingList[j].first == friendsList[i].first){
                 friendsList[i].second -= outgoingList[j].second.first; 
-                // cout << friendsList[i].second << " from " << friendsList[i].first << endl;
+                cout << friendsList[i].second << " from " << friendsList[i].first << endl;
 
                 if((outgoingList[j].second.first) != 0 && (int)outgoingList[j].second.second.size() != 0) {
                     giftValue = (outgoingList[j].second.first)/(int)outgoingList[j].second.second.size();
@@ -22,13 +22,13 @@ void computeOutgoing(vector<pair<string, int>> friendsList, vector<pair<string, 
                     giftValue = 0;
                     rest = 0;
                 } 
-                // cout << "Gift for each one: " << giftValue << " what left: " << rest << endl;
+                cout << "Gift for each one: " << giftValue << " what left: " << rest << endl;
                 friendsList[i].second += rest;
 
                 for(int k = 0; k < (int)outgoingList[j].second.second.size(); k++){
                     for(int l = 0; l < (int)friendsList.size(); l++) {
                         if(outgoingList[j].second.second[k] == friendsList[l].first) {
-                            // cout << "Gift for " << outgoingList[j].second.second[k] << ": " << giftValue << endl;
+                            cout << "Gift for " << outgoingList[j].second.second[k] << ": " << giftValue << endl;
                             friendsList[l].second += giftValue;
                         }
                     } 
